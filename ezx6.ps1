@@ -26,6 +26,24 @@ $instf=0
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+function Invoke-Download($url, $output) {
+    try {
+        Invoke-WebRequest -Uri $url -OutFile $output -ErrorAction Stop
+    } catch {
+        Write-Host "エラー: ダウンロード失敗 $url" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor Red
+        exit 1
+    }
+}
+
+function Invoke-Extract($args7z) {
+    $proc = Start-Process -FilePath $exe7z -ArgumentList $args7z -Wait -PassThru
+    if ($proc.ExitCode -ne 0) {
+        Write-Host "エラー: 展開失敗 (終了コード $($proc.ExitCode))" -ForegroundColor Red
+        exit 1
+    }
+}
+
 
 
 # --- 設定項目 ---
@@ -129,7 +147,7 @@ if (Test-Path $iconPath) {
 $btnOK = New-Object System.Windows.Forms.Button
 $btnOK.Text = "OK"
 $btnOK.Location = New-Object System.Drawing.Point(10, $ln)
-$3ln+=$addl
+$ln+=$addl
 $btnOK.Add_Click({
     if ($chk1.Checked) { #Write-Host $chk1.Text
    #     $inst_txt += $chk1.Text + "`n"
@@ -144,30 +162,25 @@ $btnOK.Add_Click({
 })
 
 
-    if ($chk1.Checked) {
-        $inst_txt += $chk1.Text + "`n"
-        $instf+=1;
-     }
-    if ($chk2.Checked) {
-        $inst_txt += $chk2.Text + "`n"
-        $instf+=2;
-        }
-
-
-
 $form.Controls.Add($btnOK)
 
 #画像表示追加
 
 $form.Controls.Add($pictureBox)
 
-#ここでは無効  Write-Host "132:" + $inst_txt
-
 # フォームの表示
 $form.ShowDialog()
 
+# フォームが閉じた後にチェックボックスの選択を読み取る
+if ($chk1.Checked) {
+    $inst_txt += $chk1.Text + "`n"
+    $instf+=1;
+}
+if ($chk2.Checked) {
+    $inst_txt += $chk2.Text + "`n"
+    $instf+=2;
+}
 
-#無効　Write-Host "138:" + $inst_txt
 $string = $inst_txt + "これらのインストール内容で実行しますか？ "
 #有効　Write-Host "140:" + $string
 
@@ -238,7 +251,7 @@ if (Test-Path $exe7z ) {
     Write-Host "7-zipが存在しないためインストールしてください"
 $url = "https://www.7-zip.org/a/7z2600-x64.exe"
 $output = $dlpath + "7z2600-x64.exe"
-Invoke-WebRequest -Uri $url -OutFile $output
+Invoke-Download $url $output
     Write-Host $output "を実行します"
 & $output
 Start-Sleep -Seconds 3
@@ -261,68 +274,57 @@ if ($instf -band 0x01 ) #XM6tG IPL-ROM
 	$xm6zip=$output;
 	echo $url ダウンロード...
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
-
-	#http://retropc.net/pi/xm6/xm6_util_20220608.zip
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
 	$url = "http://retropc.net/pi/xm6/xm6_util_20220608.zip"
 	$output = $dlpath + "xm6_util.zip"
 	$xm6_utilzip=$output;
-	echo $url ダウンロード...
+	Write-Host "$url ダウンロード..."
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
-
-
-
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
 	$url = "http://retropc.net/x68000/software/sharp/x68bios/X68BIOSE.LZH"
 	$output = $dlpath  + "X68BIOSE.LZH"
 	$romlzh=$output
-	echo $url ダウンロード...
+	Write-Host "$url ダウンロード..."
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
-	#SCSI-ROM作成に必要  http://retropc.net/x68000/software/sharp/human302/HUMN302I.LZH
-
+	#SCSI-ROM作成に必要
 	$url = "http://retropc.net/x68000/software/sharp/human302/HUMN302I.LZH"
 	$output = $dlpath  + "HUMN302I.LZH"
 	$humanlzh=$output
-	echo $url ダウンロード...
+	Write-Host "$url ダウンロード..."
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
 	#HFS(C:\_EZX6\HDD)に起動用ファイルを配置するのに必要
 	$url = "http://retropc.net/x68000/software/sharp/human302/HUMAN302.LZH"
 	$output = $dlpath  + "HUMAN302.LZH"
 	$humanlzh2=$output
-	echo $url ダウンロード...
+	Write-Host "$url ダウンロード..."
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
 
 
@@ -332,17 +334,16 @@ if ($instf -band 0x01 ) #XM6tG IPL-ROM
 if ($instf -band 0x02 ) #HDS HDDイメージダウンロード
 {
 
-	$url = " https://github.com/yunkya2/windrvxm-boot/releases/download/20240220/WindrvXMboot-20240220.zip"
+	$url = "https://github.com/yunkya2/windrvxm-boot/releases/download/20240220/WindrvXMboot-20240220.zip"
 	$output = $dlpath + "WindrvXMboot.zip"
 	$hddzip=$output;
 	echo $url ダウンロード...
 
-	if (Test-Path $output ) {
-	    # ファイルが存在する場合の処理
-	    echo $output が存在するためダウンロードしません。
-	  } else {
-	  Invoke-WebRequest -Uri $url -OutFile $output
-	 }
+	if (Test-Path $output) {
+	    Write-Host "$output が存在するためダウンロードしません。"
+	} else {
+	    Invoke-Download $url $output
+	}
 
 }
 
@@ -370,46 +371,46 @@ if ($instf -band 0x01 ) #XM6tG IPL-ROM
 #
 # Start-Process -FilePath "プログラム" -ArgumentList "引数1", "引数2" -Wait
  
-echo "$exe7z" "e $xm6zip  -o$xm6gpath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $xm6zip ,"-o$xm6gpath" ,"-aoa","-y" -Wait
- 
-echo "$exe7z" "e $xm6_utilzip  -o$xm6gpath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $xm6_utilzip ,"-o$xm6gpath" ,"-aoa","-y"  -Wait
- 
+Write-Host "$exe7z e $xm6zip -o$xm6gpath"
+Invoke-Extract @("e", $xm6zip, "-o$xm6gpath", "-aoa", "-y")
 
-echo "$exe7z e $romlzh  -o$rompath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $romlzh ,"-o$rompath" ,"-aoa","-y"  -Wait
+Write-Host "$exe7z e $xm6_utilzip -o$xm6gpath"
+Invoke-Extract @("e", $xm6_utilzip, "-o$xm6gpath", "-aoa", "-y")
 
-echo "$exe7z e $humanlzh  -o$rompath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $humanlzh ,"-o$xm6gpath" ,"-aoa","-y"  -Wait
+Write-Host "$exe7z e $romlzh -o$rompath"
+Invoke-Extract @("e", $romlzh, "-o$rompath", "-aoa", "-y")
 
-#$x68root=$basepath + "X68ROOT\"
-echo "$exe7z x $humanlzh2  -o$x68root";
-Start-Process -FilePath $exe7z -ArgumentList "x", $humanlzh2 ,"-o$x68root" ,"-aoa","-y"  -Wait
+Write-Host "$exe7z e $humanlzh -o$xm6gpath"
+Invoke-Extract @("e", $humanlzh, "-o$xm6gpath", "-aoa", "-y")
 
+Write-Host "$exe7z x $humanlzh2 -o$x68root"
+Invoke-Extract @("x", $humanlzh2, "-o$x68root", "-aoa", "-y")
 
-#$shell=$basepath + "shell\"
-#$x68root=$basepath + "X68ROOT\"
+Write-Host "CONFIG.SYS,AUTOEXEC.BATは$shellから上書きします"
+$ci1 = Join-Path $shell "CONFIG.SYS"
+$ci2 = Join-Path $shell "AUTOEXEC.BAT"
 
-echo CONFIG.SYS,AUTOEXEC.BATは$shellから上書きします
-$ci1 = Join-Path  $shell   "CONFIG.SYS"
-$ci2 = Join-Path  $shell   "AUTOEXEC.BAT"
-
-Copy-Item -Path $ci1 -Destination "$x68root" -Force
-Copy-Item -Path $ci2 -Destination "$x68root" -Force
+try {
+    Copy-Item -Path $ci1 -Destination "$x68root" -Force -ErrorAction Stop
+    Copy-Item -Path $ci2 -Destination "$x68root" -Force -ErrorAction Stop
+} catch {
+    Write-Host "エラー: ファイルのコピー失敗" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 
 
 
 }
 if ($instf -band 0x02 ) #HDS HDDイメージ
 {
-echo WindrvXMboot.HDSの展開
-echo "$exe7z e $hddzip  -o$hddpath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $hddzip ,"-o$hddpath" ,"-aoa","-y"  -Wait
+Write-Host "WindrvXMboot.HDSの展開"
+Write-Host "$exe7z e $hddzip -o$hddpath"
+Invoke-Extract @("e", $hddzip, "-o$hddpath", "-aoa", "-y")
 
-echo 1GB.HDSの展開
-echo "$exe7z e $hddzip2  -o$hddpath";
-Start-Process -FilePath $exe7z -ArgumentList "e", $hddzip2 ,"-o$hddpath" ,"-aoa","-y"  -Wait
+Write-Host "1GB.HDSの展開"
+Write-Host "$exe7z e $hddzip2 -o$hddpath"
+Invoke-Extract @("e", $hddzip2, "-o$hddpath", "-aoa", "-y")
 
 }
 
