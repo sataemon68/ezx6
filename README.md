@@ -68,7 +68,7 @@ fileset
 	EZX6.jpg	EZX6ロゴイメージ
 	ezx6.ps1	EZX6インストーラ本体
 	install.bat	初期起動用のインストールbat(通常はこれを実行)
-	Readme.txt	このファイル
+	README.md	このファイル
 	SRAM.DAT	XM6typeGの初期設定済みSRAM.DAT
 	xm6g.ini	XM6typeGの初期設定済みxm6g.ini
 ==================================================================
@@ -83,6 +83,7 @@ P2:済 1.02
   HFS(C:\_EZX6\X68ROOT)に起動用ファイルを配置する ディレクトリ付き
   CONFIG.SYS   HFS起動初期設定ファイル
   AUTOEXEC.BAT HFS起動初期設定ファイル
+P3
   必要なツール類選定　STF
   ディレクトリ配置決定　
   	\TL	ツール STF
