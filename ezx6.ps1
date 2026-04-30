@@ -129,7 +129,7 @@ if (Test-Path $iconPath) {
 $btnOK = New-Object System.Windows.Forms.Button
 $btnOK.Text = "OK"
 $btnOK.Location = New-Object System.Drawing.Point(10, $ln)
-$3ln+=$addl
+$ln+=$addl
 $btnOK.Add_Click({
     if ($chk1.Checked) { #Write-Host $chk1.Text
    #     $inst_txt += $chk1.Text + "`n"
@@ -144,30 +144,25 @@ $btnOK.Add_Click({
 })
 
 
-    if ($chk1.Checked) {
-        $inst_txt += $chk1.Text + "`n"
-        $instf+=1;
-     }
-    if ($chk2.Checked) {
-        $inst_txt += $chk2.Text + "`n"
-        $instf+=2;
-        }
-
-
-
 $form.Controls.Add($btnOK)
 
 #画像表示追加
 
 $form.Controls.Add($pictureBox)
 
-#ここでは無効  Write-Host "132:" + $inst_txt
-
 # フォームの表示
 $form.ShowDialog()
 
+# フォームが閉じた後にチェックボックスの選択を読み取る
+if ($chk1.Checked) {
+    $inst_txt += $chk1.Text + "`n"
+    $instf+=1;
+}
+if ($chk2.Checked) {
+    $inst_txt += $chk2.Text + "`n"
+    $instf+=2;
+}
 
-#無効　Write-Host "138:" + $inst_txt
 $string = $inst_txt + "これらのインストール内容で実行しますか？ "
 #有効　Write-Host "140:" + $string
 
@@ -332,7 +327,7 @@ if ($instf -band 0x01 ) #XM6tG IPL-ROM
 if ($instf -band 0x02 ) #HDS HDDイメージダウンロード
 {
 
-	$url = " https://github.com/yunkya2/windrvxm-boot/releases/download/20240220/WindrvXMboot-20240220.zip"
+	$url = "https://github.com/yunkya2/windrvxm-boot/releases/download/20240220/WindrvXMboot-20240220.zip"
 	$output = $dlpath + "WindrvXMboot.zip"
 	$hddzip=$output;
 	echo $url ダウンロード...
