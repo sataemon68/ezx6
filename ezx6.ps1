@@ -1,5 +1,5 @@
 ﻿#◆LANG:UTF8◆
-$ver="v1.02a"
+$ver="v1.02b"
 $title="EZX6インストーラ"+$ver
 
 $basepath="C:\_EZX6\"
