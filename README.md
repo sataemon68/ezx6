@@ -114,7 +114,7 @@ Pn いずれ
 Acknowledgment (謝辞、敬称略)
 	XM6typeG開発者 ＰＩ．
 	WindrvXM-boot製作者 yunkya2
-	ezx6 fix Awed
+	ezx6　Fixer Awed
 ==================================================================
 データ入手元
   XM6 TypeG　http://retropc.net/pi/xm6/
