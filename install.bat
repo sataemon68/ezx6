@@ -20,7 +20,7 @@ mkdir %BASEPATH%X68ROOT
 copy /Y EZX6.* %BASEPATH%shell
 copy /Y SRAM.DAT %BASEPATH%XM6tG
 copy /Y xm6g.ini %BASEPATH%XM6tG
-copy 1GB.HDS %BASEPATH%HDD
+copy 1GB.zip %BASEPATH%shell
 copy /Y AUTOEXEC.BAT %BASEPATH%shell
 copy /Y CONFIG.SYS %BASEPATH%shell
 

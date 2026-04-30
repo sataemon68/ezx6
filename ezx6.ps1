@@ -1,5 +1,5 @@
 ﻿#◆LANG:UTF8◆
-$ver="v1.02"
+$ver="v1.02a"
 $title="EZX6インストーラ"+$ver
 
 $basepath="C:\_EZX6\"
@@ -343,7 +343,12 @@ if ($instf -band 0x02 ) #HDS HDDイメージダウンロード
 	  } else {
 	  Invoke-WebRequest -Uri $url -OutFile $output
 	 }
+
 }
+
+	 #$shell=$basepath + "shell\"
+	 #このファイルは同梱のファイル
+	 $hddzip2=$shell + "1GB.zip"
 
 
 
@@ -386,7 +391,7 @@ Start-Process -FilePath $exe7z -ArgumentList "x", $humanlzh2 ,"-o$x68root" ,"-ao
 #$shell=$basepath + "shell\"
 #$x68root=$basepath + "X68ROOT\"
 
-#CONFIG.SYS,AUTOEXEC.BATは上書き
+echo CONFIG.SYS,AUTOEXEC.BATは$shellから上書きします
 $ci1 = Join-Path  $shell   "CONFIG.SYS"
 $ci2 = Join-Path  $shell   "AUTOEXEC.BAT"
 
@@ -398,19 +403,19 @@ Copy-Item -Path $ci2 -Destination "$x68root" -Force
 }
 if ($instf -band 0x02 ) #HDS HDDイメージ
 {
+echo WindrvXMboot.HDSの展開
 echo "$exe7z e $hddzip  -o$hddpath";
 Start-Process -FilePath $exe7z -ArgumentList "e", $hddzip ,"-o$hddpath" ,"-aoa","-y"  -Wait
+
+echo 1GB.HDSの展開
+echo "$exe7z e $hddzip2  -o$hddpath";
+Start-Process -FilePath $exe7z -ArgumentList "e", $hddzip2 ,"-o$hddpath" ,"-aoa","-y"  -Wait
 
 }
 
 
 echo ファイル展開終了
 
-
-if ($instf -band 0x02 ) #HDS HDDイメージ
-{
-  # コピーするつもりだったがinstall.batでやる
-}
 
 #ファイル加工
 
@@ -434,6 +439,8 @@ if ($instf -band 0x01 ) #XM6tG IPL-ROM
 # SCSIINROM.DAT
 # CGROM.TMP
 # 上記が存在したら起動しなくていい
+echo ROMファイルチェック中...
+
 $romf=0
 $fp1 = Join-Path $xm6gpath "SCSIEXROM.DAT"
 $fp2 = Join-Path $xm6gpath "SCSIINROM.DAT"
