@@ -1,3 +1,3 @@
-PATH %PATH%;A:\TL;A:\MX
+PATH %path%;A:\TL;A:\MX
 path
 echo MX ‚Å MXDRV‚ð‘g‚Ýž‚ß‚Ü‚·B
