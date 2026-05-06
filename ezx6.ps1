@@ -7,6 +7,7 @@ $dlpath=$basepath + "DL\"
 $fdpath=$basepath + "FD\"
 $hddpath=$basepath + "HDD\"
 $shell=$basepath + "shell\"
+$ppath=$basepath + "shell\plug"
 $x68z=$basepath + "X68000Z\"
 $xm6gpath=$basepath + "XM6tG\"
 $xm6utl=$basepath + "XM6tG\XM6Util.exe"
@@ -181,14 +182,107 @@ if ($chk2.Checked) {
     $instf+=2;
 }
 
-$string = $inst_txt + "これらのインストール内容で実行しますか？ "
-#有効　Write-Host "140:" + $string
 
 
-# フォームの設定
+
+
+#pluginsのcsv入力
+$plugins = Import-Csv .\plug\plugins.csv -Encoding UTF8
+#$plugins = Import-Csv .\plugins.csv -Encoding UTF8
+$plugins | Format-Table
+    Write-Host ("csvレコード数=" + $plugins.Count )
+#プラグインカウント
+$cnt=$plugins.Count
+
+#pluginsのフォーム表示
+# フォームの作成
 $form = New-Object System.Windows.Forms.Form
 $form.Text = $title
-$form.Size = New-Object System.Drawing.Size(400, 200)
+$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.StartPosition = "CenterScreen"
+
+
+$ln=0
+
+# ラベルの作成
+$label = New-Object System.Windows.Forms.Label
+$label.Text = "プラグイン選択"
+$label.Location = New-Object System.Drawing.Point(0,$ln)
+$ln+=$addl
+$label.Size = New-Object System.Drawing.Size(300,20)
+
+# ★ここが重要：文字サイズとフォントを変更（太字、サイズ20）
+$label.Font = New-Object System.Drawing.Font("Arial", 16, [System.Drawing.FontStyle]::Bold)
+
+# フォームにラベルを追加
+$form.Controls.Add($label)
+$chk = @();
+# チェックボックスループ
+for ($i = 0; $i -lt $cnt; $i++) {
+    Write-Host ("カウント: $i cmp="+$plugins[$i].cmp ) 
+	$chk += New-Object System.Windows.Forms.CheckBox
+	#後でインストール状態を反映させる予定
+	$chk[$i].Checked = $true
+	 $c1 = $plugins[$i].cmp
+	$chk[$i].Text = $c1
+	$chk[$i].Location = New-Object System.Drawing.Point(10, $ln)
+	$ln+=$addl
+	$chk[$i].Size = New-Object System.Drawing.Size(300, 20)
+	$form.Controls.Add($chk[$i])
+}
+# チェックボックスループ終わり
+
+
+
+# アイコンの設定 (.icoファイルのパスを指定)
+$iconPath = ".\EZX6.ico"
+if (Test-Path $iconPath) {
+    $form.Icon = New-Object System.Drawing.Icon($iconPath)
+}
+
+
+
+# OKボタン
+$btnOK = New-Object System.Windows.Forms.Button
+$btnOK.Text = "OK"
+$btnOK.Location = New-Object System.Drawing.Point(10, $ln)
+$ln+=$addl
+$btnOK.Add_Click({
+#pluginsのフォーム閉じる
+    $form.Close()
+})
+
+$form.Controls.Add($btnOK)
+
+#画像表示追加
+
+$form.Controls.Add($pictureBox)
+
+# フォームの表示
+$form.ShowDialog()
+
+
+#pluginsのフォームチェックボックス確認
+# チェックボックスループ
+for ($i = 0; $i -lt $cnt; $i++) {
+	#$chk[$i].Checked = $true
+	if ($chk[$i].Checked) {
+    		$inst_txt += $chk[$i].Text + "`n"
+	}
+}
+# チェックボックスループ終わり
+
+#pluginsのフォーム処理終わり
+
+
+
+$string = $inst_txt + "これらのインストール内容で`n実行しますか？ "
+Write-Host $string
+
+# 最終確認フォームの設定
+$form = New-Object System.Windows.Forms.Form
+$form.Text = $title
+$form.Size = New-Object System.Drawing.Size(500,(160+$ln))
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox = $false
@@ -199,14 +293,14 @@ $form.Topmost = $true
 $label = New-Object System.Windows.Forms.Label
 $label.Text = $string
 $label.Font = New-Object System.Drawing.Font("MS Gothic", 16, [System.Drawing.FontStyle]::Bold) # ここでサイズを指定
-$label.Size = New-Object System.Drawing.Size(350, 100)
+$label.Size = New-Object System.Drawing.Size(400,(40+$ln))
 $label.Location = New-Object System.Drawing.Point(20, 20)
 $label.TextAlign = "MiddleCenter"
 $form.Controls.Add($label)
 
 # Yesボタン
 $yesButton = New-Object System.Windows.Forms.Button
-$yesButton.Location = New-Object System.Drawing.Point(100, 120)
+$yesButton.Location = New-Object System.Drawing.Point(150, (60+$ln))
 $yesButton.Size = New-Object System.Drawing.Size(80, 30)
 $yesButton.Text = "Yes"
 $yesButton.DialogResult = [System.Windows.Forms.DialogResult]::Yes
@@ -215,7 +309,7 @@ $form.Controls.Add($yesButton)
 
 # Noボタン
 $noButton = New-Object System.Windows.Forms.Button
-$noButton.Location = New-Object System.Drawing.Point(200, 120)
+$noButton.Location = New-Object System.Drawing.Point(250, (60+$ln))
 $noButton.Size = New-Object System.Drawing.Size(80, 30)
 $noButton.Text = "No"
 $noButton.DialogResult = [System.Windows.Forms.DialogResult]::No
@@ -235,6 +329,10 @@ if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
     Write-Host "Noが押されました"
     exit 0;
 }
+# 最終確認フォーム処理終わり
+
+
+
 echo 7-zipのインストール状態をチェックしています。
 
 #& "C:\Program Files\7-Zip\7z.exe" x "C:\path\to\archive.7z" -o"C:\path\to\output_dir"
@@ -353,6 +451,34 @@ if ($instf -band 0x02 ) #HDS HDDイメージダウンロード
 
 
 
+
+
+#pluginsのダウンロード処理
+#pluginsのフォームチェックボックス確認
+# チェックボックスループ
+for ($i = 0; $i -lt $cnt; $i++) {
+	#$chk[$i].Checked = $true
+	if ($chk[$i].Checked) {
+
+		$url =$plugins[$i].dURL 
+		$output = $dlpath + $plugins[$i].dFile
+		echo $url ダウンロード...
+
+		if (Test-Path $output) {
+		    Write-Host "$output が存在するためダウンロードしません。"
+		} else {
+		    Invoke-Download $url $output
+		}
+
+	}
+
+}
+# チェックボックスループ終わり
+#pluginsのダウンロード処理終了
+
+
+
+
 echo ファイルダウンロード終了
 
 Start-Sleep -Seconds 3
@@ -413,6 +539,43 @@ Write-Host "$exe7z e $hddzip2 -o$hddpath"
 Invoke-Extract @("e", $hddzip2, "-o$hddpath", "-aoa", "-y")
 
 }
+
+
+#pluginsの展開処理
+#pluginsのフォームチェックボックス確認
+# チェックボックスループ
+for ($i = 0; $i -lt $cnt; $i++) {
+	#$chk[$i].Checked = $true
+	if ($chk[$i].Checked) {
+	$output = $dlpath  + $plugins[$i].dFile
+	$lzhfile=$output
+
+	#ファイルタイプ別に展開先を変える予定
+	#$path = "C:\Folder"; $file = "file.txt"; Join-Path $path $file
+	#追加パスの有無チェック
+	if($plugins[$i].aPATH -eq "")
+	{ #追加パス無し
+		Write-Host "追加パスなし"
+		$path = $x68root
+		$extpath=$path
+
+		Write-Host "extpath =" $extpath 
+	}
+	else
+	{ #追加パスあり
+		Write-Host "追加パスあり"
+		$path = $x68root
+		$file =  $plugins[$i].aPATH
+		$extpath= Join-Path $path $file
+		Write-Host "extpath =" $extpath 
+	}
+	Write-Host "$exe7z x $lzhfile -o$extpath"
+	Invoke-Extract @("x", $lzhfile, "-o$extpath", "-aoa", "-y")
+	}
+
+}
+# チェックボックスループ終わり
+#pluginsの展開処理終了
 
 
 echo ファイル展開終了
@@ -478,6 +641,66 @@ $fp3 = Join-Path $xm6gpath "CGROM.TMP"
 Start-Sleep -Seconds 3
 
 }
+
+#add.bat作成
+#将来的には自動でPATH追加をやる
+    Copy-Item -Path "add.bat" -Destination "$x68root" -Force -ErrorAction Stop
+
+#add.bat作成終わり
+
+#pluginsのbatコピー処理
+#pluginsのフォームチェックボックス確認
+# チェックボックスループ
+for ($i = 0; $i -lt $cnt; $i++) {
+	#$chk[$i].Checked = $true
+	$flg=0
+	if ($chk[$i].Checked) #チェックされている
+	{
+		$flg+=1
+	}
+	if ($plugins[$i].aBAT -ne "") #aBATがある
+	{
+		$flg+=1
+		$abat=$plugins[$i].aBAT
+	}
+	
+	if ($flg -eq 2)
+	 {
+		$output = $dlpath  + $plugins[$i].dFile
+		$lzhfile=$output
+
+		#$path = "C:\Folder"; $file = "file.txt"; Join-Path $path $file
+		#追加パスの有無チェック
+		if($plugins[$i].aPATH -eq "")
+		{ #追加パス無し
+			Write-Host "追加パスなし"
+			$path = $x68root
+			$extpath=$path
+
+			Write-Host "extpath =" $extpath 
+		}
+		else
+		{ #追加パスあり
+			Write-Host "追加パスあり"
+			$path = $x68root
+			$file =  $plugins[$i].aPATH
+			$extpath= Join-Path $path $file
+			Write-Host "extpath =" $extpath 
+		}
+		#$ppath
+		$file = $abat;
+		$path= Join-Path $ppath $file
+		
+		Write-Host "Copy $path $extpath"
+		Copy-Item -Path "$path" -Destination "$extpath" -Force -ErrorAction Stop
+
+	}
+
+}
+# チェックボックスループ終わり
+#pluginsの展開処理終了
+
+
 
 
 echo 全ての作業が終わりました。
