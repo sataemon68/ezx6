@@ -13,6 +13,7 @@ mkdir %BASEPATH%
 mkdir %BASEPATH%DL
 mkdir %BASEPATH%HDD
 mkdir %BASEPATH%shell
+mkdir %BASEPATH%shell\plug
 rem mkdir %BASEPATH%X68ROM
 mkdir %BASEPATH%X68000Z
 mkdir %BASEPATH%XM6tG
@@ -22,7 +23,9 @@ copy /Y SRAM.DAT %BASEPATH%XM6tG
 copy /Y xm6g.ini %BASEPATH%XM6tG
 copy /Y 1GB.zip %BASEPATH%shell
 copy /Y AUTOEXEC.BAT %BASEPATH%shell
+copy /Y add.BAT %BASEPATH%shell
 copy /Y CONFIG.SYS %BASEPATH%shell
+copy /Y plug\*.* %BASEPATH%shell\plug
 
 :skip
 cd /D %BASEPATH%shell

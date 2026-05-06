@@ -1,0 +1,4 @@
+cmp,sURL,dURL,dFile,type,aDir,aBAT,aPATH,isFile,ps1,sp1,sp2,sp3,sp4,sp5
+PCM8,http://retropc.net/x68000/software/sound/adpcm/pcm8/,http://retropc.net/x68000/software/sound/adpcm/pcm8/P8_048B.LZH,P8_048B.LZH,X68,TL,,TL,TL\PCM8.X,,,,,,
+MXDRV,http://retropc.net/x68000/software/sound/mxdrv/mxdrv16/,http://retropc.net/x68000/software/sound/mxdrv/mxdrv16/MXDRV206.LZH,MXDRV206.LZH,X68,MX,MX.BAT,MX,MX\mxdrv16.x,,,,,,
+MMDSP,https://www.vector.co.jp/soft/x68/art/se019746.html,https://ftp.vector.co.jp/69/10/2375/MMDSP030.zip,MMDSP030.zip,X68,TL,,TL,TL\MMDSP.r,,,,,,
