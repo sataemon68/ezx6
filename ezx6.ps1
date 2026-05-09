@@ -737,6 +737,9 @@ for ($i = 0; $i -lt $cnt; $i++) {
 #pluginsの展開処理終了
 
 
+
+
+
 #$shell=$basepath + "shell\"
 #$ppath=$basepath + "shell\plug"
 #$xm6gpath=$basepath + "XM6tG\"
@@ -744,6 +747,10 @@ for ($i = 0; $i -lt $cnt; $i++) {
 Write-Host "スタートメニューを追加します"
 
 Start-Sleep -Seconds 3
+#$IconPath = "C:\Path\To\Your\Icon.ico"   
+#$Shortcut.IconLocation = $IconPath
+$IconPath = Join-Path $shell "EZX6.ico"
+#$Shortcut.IconLocation = $IconPath
 
 #スタートメニューにEZX6と実行用ショートを追加する。
 # 1. フォルダ名とショートカット名の定義
@@ -781,6 +788,7 @@ Write-Host "scname =" $scname
 $Shortcut = $WshShell.CreateShortcut($scname)
 $Shortcut.TargetPath = $TargetAppPath1
 $Shortcut.WorkingDirectory = $wp1
+$Shortcut.IconLocation = $IconPath
 $Shortcut.Save()
 
 $scname=Join-Path $NewFolderPath $ShortcutName2
@@ -788,6 +796,7 @@ Write-Host "scname =" $scname
 $Shortcut = $WshShell.CreateShortcut($scname)
 $Shortcut.TargetPath = $TargetAppPath2
 $Shortcut.WorkingDirectory = $wp2
+$Shortcut.IconLocation = $IconPath
 $Shortcut.Save()
 
 $scname=Join-Path $NewFolderPath $ShortcutName3
