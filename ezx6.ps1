@@ -1,5 +1,5 @@
 ﻿#◆LANG:UTF8◆
-$ver="v1.10"
+$ver="v1.11"
 $title="EZX6インストーラ"+$ver
 Set-Location -Path $PSScriptRoot
 # $($args[0])
