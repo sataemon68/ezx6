@@ -1,6 +1,38 @@
 ﻿#◆LANG:UTF8◆
-$ver="v1.03"
+$ver="v1.10"
 $title="EZX6インストーラ"+$ver
+# $($args[0])
+$arg= $($args[0])
+Write-Host $arg  #第一引数の内容
+
+$currentDir = (Get-Location).Path
+Write-Host "currentDir =" $currentDir
+
+
+#管理者権限に移行 (正常に動作しないのでコメント)
+#Write-Host 管理者権限に移行
+#if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+#    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $currentDir" -Verb RunAs  -WorkingDirectory $currentDir
+#    Exit
+#}
+#管理者権限に移行 (正常に動作しないのでコメント)おわり
+
+if
+(-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) 
+{
+Write-Host 管理者権限で実行してください。
+Start-Sleep -Seconds 10
+exit 1
+}
+
+if($null -ne $arg )
+{
+	Write-Host "カレントディレクトリ変更"
+	Set-Location -Path $arg
+}
+$currentDir = (Get-Location).Path
+Write-Host "currentDir =" $currentDir
+
 
 $basepath="C:\_EZX6\"
 $dlpath=$basepath + "DL\"
@@ -14,6 +46,10 @@ $xm6utl=$basepath + "XM6tG\XM6Util.exe"
 #$rompath=$basepath + "X68ROM\"
 $rompath=$xm6gpath
 $x68root=$basepath + "X68ROOT\"
+
+
+
+
 
 
 $ln=0
@@ -48,7 +84,7 @@ function Invoke-Extract($args7z) {
 
 
 # --- 設定項目 ---
-$imagePath = ".\EZX6.jpg" # 表示したい画像のパス
+$imagePath = "EZX6.jpg" # 表示したい画像のパス
 $displayTime = 3000 # 表示時間 (ミリ秒)
 # ----------------
 
@@ -80,7 +116,7 @@ $timer.Add_Tick({
 
 # フォーム表示
 $form.Add_Shown({$timer.Start()})
-$form.ShowDialog()
+$form.ShowDialog() | Out-Null #出力を捨てる(Cancel文字抑止)
 
 $timer.Interval = 655360;
 
@@ -138,7 +174,7 @@ $form.Controls.Add($chk2)
 
 
 # アイコンの設定 (.icoファイルのパスを指定)
-$iconPath = ".\EZX6.ico"
+$iconPath = "EZX6.ico"
 if (Test-Path $iconPath) {
     $form.Icon = New-Object System.Drawing.Icon($iconPath)
 }
@@ -170,7 +206,7 @@ $form.Controls.Add($btnOK)
 $form.Controls.Add($pictureBox)
 
 # フォームの表示
-$form.ShowDialog()
+$form.ShowDialog() | Out-Null #出力を捨てる(Cancel文字抑止)
 
 # フォームが閉じた後にチェックボックスの選択を読み取る
 if ($chk1.Checked) {
@@ -187,8 +223,8 @@ if ($chk2.Checked) {
 
 
 #pluginsのcsv入力
-$plugins = Import-Csv .\plug\plugins.csv -Encoding UTF8
-#$plugins = Import-Csv .\plugins.csv -Encoding UTF8
+$plugins = Import-Csv plug\plugins.csv -Encoding UTF8
+#$plugins = Import-Csv plugins.csv -Encoding UTF8
 $plugins | Format-Table
     Write-Host ("csvレコード数=" + $plugins.Count )
 #プラグインカウント
@@ -235,7 +271,7 @@ for ($i = 0; $i -lt $cnt; $i++) {
 
 
 # アイコンの設定 (.icoファイルのパスを指定)
-$iconPath = ".\EZX6.ico"
+$iconPath = "EZX6.ico"
 if (Test-Path $iconPath) {
     $form.Icon = New-Object System.Drawing.Icon($iconPath)
 }
@@ -259,7 +295,7 @@ $form.Controls.Add($btnOK)
 $form.Controls.Add($pictureBox)
 
 # フォームの表示
-$form.ShowDialog()
+$form.ShowDialog() | Out-Null #出力を捨てる(Cancel文字抑止)
 
 
 #pluginsのフォームチェックボックス確認
@@ -701,11 +737,83 @@ for ($i = 0; $i -lt $cnt; $i++) {
 #pluginsの展開処理終了
 
 
+#$shell=$basepath + "shell\"
+#$ppath=$basepath + "shell\plug"
+#$xm6gpath=$basepath + "XM6tG\"
+
+Write-Host "スタートメニューを追加します"
+
+Start-Sleep -Seconds 3
+
+#スタートメニューにEZX6と実行用ショートを追加する。
+# 1. フォルダ名とショートカット名の定義
+$GroupName = "EZX6"
+$ShortcutName1 = "EZX6 XM6自動構築ツール.lnk"
+$TargetAppPath1 =  Join-Path $shell "ezx6.bat" # 実際のアプリパス
+$wp1 = $shell
+
+$ShortcutName2 = "EZX6 plugins 確認.lnk"
+$TargetAppPath2 =  Join-Path $ppath "plugins.bat" # 実際のアプリパス
+$wp2 = $ppath
+
+$ShortcutName3 = "X680x0 EMULATOR XM6 TypeG.lnk"
+$TargetAppPath3 =  Join-Path $xm6gpath "xm6g.exe" # 実際のアプリパス
+$wp3 = $xm6gpath
+
+$ShortcutName4 = "X68000 EMULATOR XM6 UTILITY.lnk"
+$TargetAppPath4 =  Join-Path $xm6gpath "XM6Util.exe" # 実際のアプリパス
+$wp4 = $xm6gpath
+
+# 2. スタートメニューのプログラムフォルダパス
+$StartMenuPath = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs"
+$NewFolderPath = Join-Path $StartMenuPath $GroupName
+
+# 3. フォルダの作成
+if (!(Test-Path $NewFolderPath)) {
+    New-Item -ItemType Directory -Path $NewFolderPath
+}
+
+# 4. ショートカットの作成
+$WshShell = New-Object -ComObject WScript.Shell
+
+$scname=Join-Path $NewFolderPath $ShortcutName1
+Write-Host "scname =" $scname
+$Shortcut = $WshShell.CreateShortcut($scname)
+$Shortcut.TargetPath = $TargetAppPath1
+$Shortcut.WorkingDirectory = $wp1
+$Shortcut.Save()
+
+$scname=Join-Path $NewFolderPath $ShortcutName2
+Write-Host "scname =" $scname
+$Shortcut = $WshShell.CreateShortcut($scname)
+$Shortcut.TargetPath = $TargetAppPath2
+$Shortcut.WorkingDirectory = $wp2
+$Shortcut.Save()
+
+$scname=Join-Path $NewFolderPath $ShortcutName3
+Write-Host "scname =" $scname
+$Shortcut = $WshShell.CreateShortcut($scname)
+$Shortcut.TargetPath = $TargetAppPath3
+$Shortcut.WorkingDirectory = $wp3
+$Shortcut.Save()
+
+$scname=Join-Path $NewFolderPath $ShortcutName4
+Write-Host "scname =" $scname
+$Shortcut = $WshShell.CreateShortcut($scname)
+$Shortcut.TargetPath = $TargetAppPath4
+$Shortcut.WorkingDirectory = $wp4
+$Shortcut.Save()
 
 
-echo 全ての作業が終わりました。
+
+
+Write-Host "グループ '$GroupName' を作成しました。"
+
+#スタートメニューにEZX6と実行用ショートを追加終わり
+
+
+Write-Host  全ての作業が終わりました。
+Write-Host  スタートメニューから起動できます。
 Start-Sleep -Seconds 3
-echo $xm6gpath から xm6g.exe を起動できます。
-Start-Sleep -Seconds 3
-Invoke-Item $xm6gpath
+Invoke-Item $NewFolderPath
 
