@@ -145,14 +145,14 @@ sp1-5	未使用
 	WindrvXM-boot製作者 yunkya2
 	ezx6　Fixer Awed
 ```
-==================================================================
 ## データ入手元
+```
 - XM6 TypeG　http://retropc.net/pi/xm6/
 - IPL-ROM　http://retropc.net/x68000/software/sharp/x68bios/
 - Human68kシステムディスク　http://retropc.net/x68000/software/sharp/human302/
 - 7-Zip　https://7-zip.opensource.jp/
-- WindrvXM-boot　https://github.com/yunkya2/windrvxm-boot　
-==================================================================
+- WindrvXM-boot　https://github.com/yunkya2/windrvxm-boot
+```
 
 ## 更新履歴
 ```
