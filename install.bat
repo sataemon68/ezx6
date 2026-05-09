@@ -30,6 +30,7 @@ copy /Y plug\*.* %BASEPATH%shell\plug
 :skip
 cd /D %BASEPATH%shell
 
-ezx6.bat
+ezx6.bat %BASEPATH%shell
+
 
 
