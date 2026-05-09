@@ -1,21 +1,21 @@
 ﻿#◆LANG:UTF8◆
 $ver="v1.10"
 $title="EZX6インストーラ"+$ver
+Set-Location -Path $PSScriptRoot
 # $($args[0])
 $arg= $($args[0])
-Write-Host $arg  #第一引数の内容
-
+#Write-Host $arg  #第一引数の内容
 $currentDir = (Get-Location).Path
-Write-Host "currentDir =" $currentDir
 
 
+#管理者権限に移行
 #管理者権限に移行 (正常に動作しないのでコメント)
-#Write-Host 管理者権限に移行
-#if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-#    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $currentDir" -Verb RunAs  -WorkingDirectory $currentDir
-#    Exit
-#}
-#管理者権限に移行 (正常に動作しないのでコメント)おわり
+Write-Host 管理者権限に移行
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`" $currentDir" -Verb RunAs  -WorkingDirectory $currentDir
+    Exit
+}
+#管理者権限に移行 おわり
 
 if
 (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) 
@@ -84,7 +84,7 @@ function Invoke-Extract($args7z) {
 
 
 # --- 設定項目 ---
-$imagePath = "EZX6.jpg" # 表示したい画像のパス
+$imagePath =  Join-Path $PSScriptRoot "EZX6.jpg" # 表示したい画像のパス
 $displayTime = 3000 # 表示時間 (ミリ秒)
 # ----------------
 
@@ -174,7 +174,7 @@ $form.Controls.Add($chk2)
 
 
 # アイコンの設定 (.icoファイルのパスを指定)
-$iconPath = "EZX6.ico"
+$iconPath = Join-Path $PSScriptRoot "EZX6.ico"
 if (Test-Path $iconPath) {
     $form.Icon = New-Object System.Drawing.Icon($iconPath)
 }
@@ -271,7 +271,7 @@ for ($i = 0; $i -lt $cnt; $i++) {
 
 
 # アイコンの設定 (.icoファイルのパスを指定)
-$iconPath = "EZX6.ico"
+$iconPath = Join-Path $PSScriptRoot "EZX6.ico"
 if (Test-Path $iconPath) {
     $form.Icon = New-Object System.Drawing.Icon($iconPath)
 }
@@ -747,10 +747,8 @@ for ($i = 0; $i -lt $cnt; $i++) {
 Write-Host "スタートメニューを追加します"
 
 Start-Sleep -Seconds 3
-#$IconPath = "C:\Path\To\Your\Icon.ico"   
-#$Shortcut.IconLocation = $IconPath
 $IconPath = Join-Path $shell "EZX6.ico"
-#$Shortcut.IconLocation = $IconPath
+
 
 #スタートメニューにEZX6と実行用ショートを追加する。
 # 1. フォルダ名とショートカット名の定義
