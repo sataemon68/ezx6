@@ -61,7 +61,7 @@ aDir
 aBAT
 	追加BAT(オプション)
 	追加するBATファイルを指定します。
-	plugs下にBATを置きます。
+	plug下にBATを置きます。
 aPATH   現在無効
 	追加PATH(オプション)
 	PATHに追加するパス
