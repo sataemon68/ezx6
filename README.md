@@ -29,7 +29,7 @@ EZX6  XM6自動構築ツール
 ```
 ## Plugins
 ```
-    プラグインはplugs下のplugins.csvを追加することで対応します。
+    プラグインはplug下のplugins.csvを追加することで対応します。
     同一ディレクトリにあるplugins.batで内容を確認できます。
 
 plugins.csvレコードのフォーマット形式
