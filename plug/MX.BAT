@@ -15,8 +15,8 @@ SET MDRV_R=MXDRV16 -R
 goto EXIT
 :UNSET
 REM ƒhƒ‰ƒCƒo‚ð‰ðœ‚·‚é
-%PCM8_R%
 %MDRV_R%
+%PCM8_R%
 SET PCM8=""
 SET PCM8_R=""
 SET MDRV=""

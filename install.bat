@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 set BASEPATH=C:\_EZX6\
 rem if exist %BASEPATH%shell\ezx6.ps1 goto skip
 
@@ -27,7 +28,7 @@ copy /Y add.BAT %BASEPATH%shell
 copy /Y CONFIG.SYS %BASEPATH%shell
 copy /Y plug\*.* %BASEPATH%shell\plug
 
-:skip
+:skip  
 cd /D %BASEPATH%shell
 
 ezx6.bat %BASEPATH%shell
