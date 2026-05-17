@@ -19,6 +19,7 @@ rem mkdir %BASEPATH%X68ROM
 mkdir %BASEPATH%X68000Z
 mkdir %BASEPATH%XM6tG
 mkdir %BASEPATH%X68ROOT
+copy /Y ver.txt %BASEPATH%shell
 copy /Y EZX6.* %BASEPATH%shell
 copy /Y SRAM.DAT %BASEPATH%XM6tG
 copy /Y xm6g.ini %BASEPATH%XM6tG
