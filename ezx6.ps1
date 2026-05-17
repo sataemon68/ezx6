@@ -1,7 +1,15 @@
 ﻿#◆LANG:UTF8◆
-$ver="v1.11"
-$title="EZX6インストーラ"+$ver
+$cd=$PSScriptRoot
 Set-Location -Path $PSScriptRoot
+$vertxt= Join-Path $PSScriptRoot "ver.txt"
+$text = (Get-Content -Path $vertxt -Raw).Replace("`r`n", "").Replace("`n", "")
+$ver="Ver."+$text
+
+#バージョンのURL
+$vurl1="https://raw.githubusercontent.com/sataemon68/ezx6/refs/heads/main/ver.txt"
+$vurl2="https://raw.githubusercontent.com/sataemon68/ezx6/refs/heads/feature/test-new/ver.txt"
+
+$title="EZX6インストーラ"+$ver
 # $($args[0])
 $arg= $($args[0])
 #Write-Host $arg  #第一引数の内容

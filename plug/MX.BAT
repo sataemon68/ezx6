@@ -1,5 +1,5 @@
 
-REM 環境変数を見てドライバを組み込む
+REM 引数-Rで解除
 IF "%1" == "-r" GOTO UNSET
 IF "%1" == "-R" GOTO UNSET
 IF "%PCM8%" == "" GOTO SKIP1
