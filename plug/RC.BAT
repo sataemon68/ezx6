@@ -4,7 +4,7 @@ IF "%1" == "-r" GOTO UNSET
 IF "%1" == "-R" GOTO UNSET
 
 IF "%MDRV%" == "" GOTO EXIT
-rcd
+rcd -S256
 SET MDRV=rcd
 SET MDRV_R=rcd -R
 REM XM6のメニュー[ツール][オプション][MIDI]から適切なMIDIデバイスを設定して下さい。
