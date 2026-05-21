@@ -3,4 +3,6 @@ PCM8,http://retropc.net/x68000/software/sound/adpcm/pcm8/,http://retropc.net/x68
 MXDRV,http://retropc.net/x68000/software/sound/mxdrv/mxdrv16/,http://retropc.net/x68000/software/sound/mxdrv/mxdrv16/MXDRV206.LZH,MXDRV206.LZH,X68,MX,MX.BAT,MX,MX\mxdrv16.x,,,,,,
 MMDSP,https://www.vector.co.jp/soft/x68/art/se019746.html,https://ftp.vector.co.jp/69/10/2375/MMDSP030.zip,MMDSP030.zip,X68,TL,,TL,TL\MMDSP.r,,,,,,
 RCD(RC-System),http://retropc.net/x68000/software/sound/rc/rcsystem/,http://retropc.net/x68000/software/sound/rc/rcsystem/rc3013.Lzh,rc3013.Lzh,X68,RC,RC.BAT,RC,RC\rcd.x,,,,,,
-RCD(Conv.),http://retropc.net/x68000/software/sound/rc/rcsystem/,http://retropc.net/x68000/software/sound/rc/rcsystem/conv3013.Lzh,conv3013.Lzh,X68,RC,RC.BAT,RC,RC\ItoR.X,,,,,,
+RCD(Conv.),http://retropc.net/x68000/software/sound/rc/rcsystem/,http://retropc.net/x68000/software/sound/rc/rcsystem/conv3013.Lzh,conv3013.Lzh,X68,RC,,RC,RC\ItoR.X,,,,,,
+STF,http://retropc.net/x68000/software/tools/filer/stf/,http://retropc.net/x68000/software/tools/filer/stf/STF200FS.LZH,STF200FS.LZH,X68,TF,,TF,tf.x,,,,,,
+TwentyOne.x,http://retropc.net/x68000/software/disk/filename/twentyone/,http://retropc.net/x68000/software/disk/filename/twentyone/tw136c14.lzh,tw136c14.lzh,X68,TL,,TL,TwentyOne.x,,,,,,
