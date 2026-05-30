@@ -140,6 +140,8 @@ sp1-5	未使用
 				MXDRV用追加BAT
 			RC.BAT
 				RCD用追加BAT
+			MC.BAT
+				MCDRV用追加BAT
 
 ```
 ## Acknowledgment (謝辞、敬称略)
@@ -147,6 +149,7 @@ sp1-5	未使用
 	XM6typeG開発者 ＰＩ．
 	WindrvXM-boot製作者 yunkya2
 	ezx6　Fixer Awed
+	Technical Advisor Googele Gemini
 ```
 ## データ入手元
 ```
@@ -179,7 +182,7 @@ Ver.1.10  2026/05/09
                      	現在設定可能なもの
                      	PCM8、MXDRV、MMDSP
                      スタートメニューグループEZX6とアイコン追加
-                     	EZX6 plugins 確認.lnk
+                     	EZX6 plugins 確認.lnk(Ver.1.13 までの名称)
                      	EZX6 XM6自動構築ツール.lnk
                      	X68000 EMULATOR XM6 UTILITY.lnk
                      	X680x0 EMULATOR XM6 TypeG.lnk
