@@ -16,6 +16,23 @@ $arg= $($args[0])
 $currentDir = (Get-Location).Path
 
 
+# 対象のプロセス名（拡張子を除いた名前）
+$processNames = @("xm6g", "XM6Util")
+
+# プロセスが起動しているか確認
+$running = Get-Process | Where-Object { $processNames -contains $_.ProcessName }
+
+if ($running) {
+    # 警告ダイアログを表示（OKボタンのみ）
+    [System.Windows.Forms.MessageBox]::Show("プロセス（xm6g / XM6Util）が起動しています。終了させてから実行してください。", "警告", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Warning)
+    
+    # trueを返す
+    $true
+    
+    # スクリプトを終了
+    Exit
+}
+
 #管理者権限に移行
 #管理者権限に移行 (正常に動作しないのでコメント)
 Write-Host 管理者権限に移行
@@ -85,7 +102,9 @@ function Invoke-Extract($args7z) {
     $proc = Start-Process -FilePath $exe7z -ArgumentList $args7z -Wait -PassThru
     if ($proc.ExitCode -ne 0) {
         Write-Host "エラー: 展開失敗 (終了コード $($proc.ExitCode))" -ForegroundColor Red
-        exit 1
+        # MCDRV068.lzh
+        # MCDRV.Xでエラーが出ることがあるので無視して続行
+        #exit 1
     }
 }
 
@@ -242,7 +261,7 @@ $cnt=$plugins.Count
 # フォームの作成
 $form = New-Object System.Windows.Forms.Form
 $form.Text = $title
-$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.Size = New-Object System.Drawing.Size(400, (100 + $cnt *40))
 $form.StartPosition = "CenterScreen"
 
 
@@ -765,7 +784,7 @@ $ShortcutName1 = "EZX6 XM6自動構築ツール.lnk"
 $TargetAppPath1 =  Join-Path $shell "ezx6.bat" # 実際のアプリパス
 $wp1 = $shell
 
-$ShortcutName2 = "EZX6 plugins 確認.lnk"
+$ShortcutName2 = "EZX6 プラグインリストビューア.lnk"
 $TargetAppPath2 =  Join-Path $ppath "plugins.bat" # 実際のアプリパス
 $wp2 = $ppath
 

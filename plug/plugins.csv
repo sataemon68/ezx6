@@ -6,3 +6,6 @@ RCD(RC-System),http://retropc.net/x68000/software/sound/rc/rcsystem/,http://retr
 RCD(Conv.),http://retropc.net/x68000/software/sound/rc/rcsystem/,http://retropc.net/x68000/software/sound/rc/rcsystem/conv3013.Lzh,conv3013.Lzh,X68,RC,,RC,RC\ItoR.X,,,,,,
 STF,http://retropc.net/x68000/software/tools/filer/stf/,http://retropc.net/x68000/software/tools/filer/stf/STF200FS.LZH,STF200FS.LZH,X68,TF,,TF,tf.x,,,,,,
 TwentyOne.x,http://retropc.net/x68000/software/disk/filename/twentyone/,http://retropc.net/x68000/software/disk/filename/twentyone/tw136c14.lzh,tw136c14.lzh,X68,TL,,TL,TwentyOne.x,,,,,,
+MCDRV(Ver0.68本体),http://retropc.net/saya/x68000/,http://retropc.net/saya/x68000/lib/MCDRV068.lzh,MCDRV068.lzh,X68,MC,MC.BAT,MC,MCDRV.x,,,,,,
+MCDRV(Ver0.69差分),http://retropc.net/saya/x68000/,http://retropc.net/saya/x68000/lib/MCDRV069.Lzh,MCDRV069.Lzh,X68,MC,,MC,MCDRV.x,,,,,,
+MCDISP,http://retropc.net/saya/x68000/,http://retropc.net/saya/x68000/lib/MCDSP047.Lzh,MCDSP047.Lzh,X68,MC,,MC,MCDISP.R,,,,,,

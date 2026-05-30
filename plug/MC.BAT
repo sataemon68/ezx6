@@ -1,0 +1,25 @@
+
+REM ˆø”-R‚Å‰ðœ
+IF "%1" == "-r" GOTO UNSET
+IF "%1" == "-R" GOTO UNSET
+IF "%PCM8%" == "" GOTO SKIP1
+PCM8
+SET PCM8=PCM8
+SET PCM8_R=PCM8 -R
+:SKIP1
+IF "%MDRV%" == "" GOTO EXIT
+MCDRV -B1024 -I1
+SET MDRV=MCDRV
+SET MDRV_R=MCDRV -R
+:SKIP2
+goto EXIT
+:UNSET
+REM ƒhƒ‰ƒCƒo‚ð‰ðœ‚·‚é
+%MDRV_R%
+%PCM8_R%
+SET PCM8=""
+SET PCM8_R=""
+SET MDRV=""
+SET MDRV_R=""
+
+:EXIT
