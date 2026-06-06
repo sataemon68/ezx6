@@ -1,2 +1,4 @@
 *.bat text eol=crlf
 *.BAT text eol=crlf
+CONFIG.SYS text eol=crlf
+
